@@ -1,6 +1,7 @@
 package intro.bookservice.controller;
 
 import intro.bookservice.dto.BookDto;
+import intro.bookservice.dto.BookSearchParameters;
 import intro.bookservice.dto.CreateBookRequestDto;
 import intro.bookservice.service.BookService;
 import java.util.List;
@@ -48,4 +49,9 @@ public class BookController {
         bookService.delete(id);
     }
 
+
+    @GetMapping("/search")
+    public List<BookDto> search(BookSearchParameters searchParameters) {
+        return bookService.search(searchParameters);
+    }
 }
