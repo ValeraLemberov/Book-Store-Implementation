@@ -27,26 +27,21 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             HttpHeaders headers,
             HttpStatusCode status,
             WebRequest request) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST);
         List<String> errors = ex.getBindingResult().getAllErrors().stream()
                 .map(this::getErrorMsg)
                 .toList();
-        body.put("errors", errors);
+        Map<String, Object> body = createBody(HttpStatus.BAD_REQUEST, errors.toString());
         return new ResponseEntity<>(body, headers, status);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Object> handlerEntityNotFount(
+    public ResponseEntity<Object> handlerEntityNotFound(
             EntityNotFoundException ex,
             HttpServletRequest request) {
         String url = request.getRequestURI();
         String id = url.substring(url.lastIndexOf("/") + 1);
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.NOT_FOUND);
-        body.put("message", "Entity not fount by id: " + id);
+        Map<String, Object> body = createBody(HttpStatus.NOT_FOUND,
+                "Entity not fount by id: " + id);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
@@ -57,5 +52,13 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             return  field + " " + message;
         }
         return e.getDefaultMessage();
+    }
+
+    private Map<String, Object> createBody(HttpStatus status, String message) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", status);
+        body.put("message", message);
+        return body;
     }
 }

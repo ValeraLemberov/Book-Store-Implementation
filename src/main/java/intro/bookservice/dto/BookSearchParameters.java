@@ -5,7 +5,6 @@ import java.util.Arrays;
 public record BookSearchParameters (
         String[] title,
         String[] author,
-        String[] prices,
         String[] isbn){
     @Override
     public boolean equals(Object o) {
@@ -14,7 +13,6 @@ public record BookSearchParameters (
         BookSearchParameters that = (BookSearchParameters) o;
         return Arrays.equals(title, that.title)
                 && Arrays.equals(author, that.author)
-                && Arrays.equals(prices, that.prices)
                 && Arrays.equals(isbn, that.isbn);
     }
 
@@ -22,7 +20,6 @@ public record BookSearchParameters (
     public int hashCode() {
         int result = Arrays.hashCode(title);
         result = 31 * result + Arrays.hashCode(author);
-        result = 31 * result + Arrays.hashCode(prices);
         result = 31 * result + Arrays.hashCode(isbn);
         return result;
     }
@@ -32,7 +29,6 @@ public record BookSearchParameters (
         return "BookSearchParameters{"
                 + "title=" + Arrays.toString(title)
                 + ", author=" + Arrays.toString(author)
-                + ", prices=" + Arrays.toString(prices)
                 + ", isbn=" + Arrays.toString(isbn)
                 + '}';
     }
