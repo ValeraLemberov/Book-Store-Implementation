@@ -1,10 +1,12 @@
 package intro.bookservice.service.impl;
 
 import intro.bookservice.dto.BookDto;
+import intro.bookservice.dto.BookSearchParameters;
 import intro.bookservice.dto.CreateBookRequestDto;
 import intro.bookservice.mapper.BookMapper;
 import intro.bookservice.model.Book;
-import intro.bookservice.repository.BookRepository;
+import intro.bookservice.repository.book.BookRepository;
+import intro.bookservice.repository.book.BookSpecificationBuilder;
 import intro.bookservice.service.BookService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
+    private final BookSpecificationBuilder bookSpecificationBuilder;
 
 
     @Override
@@ -48,5 +51,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public void delete(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public List<BookDto> search(BookSearchParameters searchParameters) {
+        return bookRepository.findAll(bookSpecificationBuilder.build(searchParameters))
+                .stream()
+                .map(bookMapper::toDto)
+                .toList();
     }
 }
