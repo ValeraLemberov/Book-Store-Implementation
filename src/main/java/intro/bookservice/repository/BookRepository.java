@@ -1,12 +1,7 @@
 package intro.bookservice.repository;
 
 import intro.bookservice.model.Book;
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BookRepository {
-    Book save(Book book);
-
-    List<Book> findAll();
-
-    Book findById(Long id);
+public interface BookRepository extends JpaRepository<Book, Long> {
 }
