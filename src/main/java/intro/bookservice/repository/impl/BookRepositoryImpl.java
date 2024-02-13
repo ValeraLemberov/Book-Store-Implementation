@@ -45,4 +45,13 @@ public class BookRepositoryImpl implements BookRepository {
             throw new RuntimeException("Can't find any books from DB.");
         }
     }
+
+    @Override
+    public Book findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Book.class, id);
+        } catch (Exception e) {
+            throw new RuntimeException("Can't find book by id: " + id);
+        }
+    }
 }
