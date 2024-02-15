@@ -45,6 +45,15 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(RegistrationException.class)
+    public ResponseEntity<Object> handlerRegistrationException(
+            RegistrationException ex,
+            HttpServletRequest request) {
+        Map<String, Object> body =
+                createBody(HttpStatus.UNAUTHORIZED, "Passwords do not match");
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
     private String getErrorMsg(ObjectError e) {
         if (e instanceof FieldError) {
             String field = ((FieldError) e).getField();

@@ -1,8 +1,8 @@
 package intro.bookservice.service.impl;
 
-import intro.bookservice.dto.BookDto;
-import intro.bookservice.dto.BookSearchParameters;
-import intro.bookservice.dto.CreateBookRequestDto;
+import intro.bookservice.dto.book.BookDto;
+import intro.bookservice.dto.book.BookSearchParameters;
+import intro.bookservice.dto.book.CreateBookRequestDto;
 import intro.bookservice.mapper.BookMapper;
 import intro.bookservice.model.Book;
 import intro.bookservice.repository.book.BookRepository;
