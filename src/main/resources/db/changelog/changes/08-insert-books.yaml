@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-books
+      author: root
+      changes:
+        - insert:
+            tableName: books
+            columns:
+              - column: {name: title, value: "Main manual"}
+              - column: {name: author, value: "root"}
+              - column: {name: isbn, value: "123511231245"}
+              - column: {name: price, value: 20.95}
+              - column: {name: description, value: "This is the main manual, written by the admin."}
+              - column: {name: is_deleted, value: 0}
+        - insert:
+            tableName: books
+            columns:
+              - column: { name: title, value: "Story book" }
+              - column: { name: author, value: "user" }
+              - column: { name: isbn, value: "123212423613" }
+              - column: { name: price, value: 15.12 }
+              - column: { name: description, value: "The storybook for traveling."}
+              - column: { name: is_deleted, value: 0 }
