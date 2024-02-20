@@ -1,6 +1,6 @@
 package intro.bookservice.repository.book;
 
-import intro.bookservice.dto.BookSearchParameters;
+import intro.bookservice.dto.book.BookSearchParameters;
 import intro.bookservice.model.Book;
 import intro.bookservice.repository.spec.SpecificationBuilder;
 import intro.bookservice.repository.spec.SpecificationProviderManager;
