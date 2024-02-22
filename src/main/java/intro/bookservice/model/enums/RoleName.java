@@ -1,4 +1,4 @@
-package intro.bookservice.model;
+package intro.bookservice.model.enums;
 
 public enum RoleName {
     ADMIN,

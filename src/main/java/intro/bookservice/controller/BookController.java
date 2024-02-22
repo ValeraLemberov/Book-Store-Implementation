@@ -1,6 +1,6 @@
 package intro.bookservice.controller;
 
-import intro.bookservice.dto.book.BookDto;
+import intro.bookservice.dto.book.BookResponseDto;
 import intro.bookservice.dto.book.BookSearchParameters;
 import intro.bookservice.dto.book.CreateBookRequestDto;
 import intro.bookservice.service.BookService;
@@ -29,30 +29,29 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController {
     private final BookService bookService;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     @Operation(summary = "Get all books", description = "Get all books using pagination and sort.")
-    public List<BookDto> getAll(Pageable pageable) {
+    public List<BookResponseDto> getAll(Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get book by id", description = "Get available book by id.")
-    public BookDto getBookById(@PathVariable Long id) {
+    public BookResponseDto getBookById(@PathVariable Long id) {
         return bookService.findById(id);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     @Operation(summary = "Save new book", description = "Save a new book with required fields.")
-    public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
+    public BookResponseDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
         return bookService.save(bookDto);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     @Operation(summary = "Update book", description = "Update any available book by id.")
-    public BookDto update(@PathVariable Long id, @RequestBody @Valid CreateBookRequestDto bookDto) {
+    public BookResponseDto update(@PathVariable Long id, @RequestBody @Valid CreateBookRequestDto bookDto) {
         return bookService.update(id, bookDto);
     }
 
@@ -64,11 +63,9 @@ public class BookController {
         bookService.delete(id);
     }
 
-
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/search")
     @Operation(summary = "Search book", description = "Search books by params.")
-    public List<BookDto> search(BookSearchParameters searchParameters) {
+    public List<BookResponseDto> search(BookSearchParameters searchParameters) {
         return bookService.search(searchParameters);
     }
 }

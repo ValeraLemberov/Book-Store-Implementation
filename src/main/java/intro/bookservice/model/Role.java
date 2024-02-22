@@ -1,5 +1,6 @@
 package intro.bookservice.model;
 
+import intro.bookservice.model.enums.RoleName;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,4 +21,11 @@ public class Role {
     @Column(nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
     private RoleName roleName;
+
+    public Role() {
+    }
+
+    public Role(Long id) {
+        this.id = id;
+    }
 }
