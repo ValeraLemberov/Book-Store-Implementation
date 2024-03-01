@@ -9,7 +9,6 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Set;
 import lombok.Data;
@@ -33,8 +32,7 @@ public class ShoppingCart {
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
     private Set<CartItem> cartItems;
 
-    @NotNull
-    @Column(name = "is_deleted")
+    @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
     @Override
@@ -50,5 +48,12 @@ public class ShoppingCart {
     @Override
     public int hashCode() {
         return Objects.hash(id, cartItems, isDeleted);
+    }
+
+    public ShoppingCart() {
+    }
+
+    public ShoppingCart(User user) {
+        this.user = user;
     }
 }
