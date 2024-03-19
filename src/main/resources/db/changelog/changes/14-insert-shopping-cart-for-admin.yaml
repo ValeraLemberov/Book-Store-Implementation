@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: assign-shopping-cart
+      author: root
+      changes:
+          - insert:
+              tableName: shopping_carts
+              columns:
+                - column: {name: id, value: 1}
+                - column: {name: is_deleted, value: 0}

@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -20,10 +19,13 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+
+    @Column(name = "name", nullable = false)
     private String name;
+
     private String description;
-    @Column(nullable = false)
+
+    @Column(name = "is_deleted",nullable = false)
     private boolean isDeleted = false;
 
     public Category() {
