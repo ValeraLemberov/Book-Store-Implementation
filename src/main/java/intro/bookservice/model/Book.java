@@ -25,21 +25,29 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String title;
+
     @Column(nullable = false)
     private String author;
+
     @Column(nullable = false, unique = true)
     private String isbn;
+
     @Column(nullable = false)
     private BigDecimal price;
+
     private String description;
+
     private String coverImage;
+
     @ManyToMany
     @JoinTable(name = "books_categories",
         joinColumns = @JoinColumn(name = "book_id"),
         inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
+
     @Column(nullable = false)
     private boolean isDeleted = false;
 }

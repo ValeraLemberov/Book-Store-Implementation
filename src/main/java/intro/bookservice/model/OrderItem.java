@@ -2,38 +2,42 @@ package intro.bookservice.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Objects;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-@Entity
 @Data
-@SQLDelete(sql = "UPDATE cart_items SET is_deleted = true WHERE id=?")
+@Entity
+@SQLDelete(sql = "UPDATE order_items SET is_deleted = true WHERE id = ?")
 @SQLRestriction("is_deleted = false")
-@Table(name = "cart_items")
-public class CartItem {
+@Table(name = "order_items")
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "shopping_cart_id", nullable = false)
-    private ShoppingCart shoppingCart;
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "book_id", nullable = false, unique = true)
+    @OneToOne
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
     @Column(name = "quantity", nullable = false)
-    private Integer quantity;
+    private int quantity;
+
+    @Column(name = "price", nullable = false)
+    private BigDecimal price;
 
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
@@ -42,15 +46,16 @@ public class CartItem {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CartItem cartItem = (CartItem) o;
-        return isDeleted == cartItem.isDeleted
-                && Objects.equals(id, cartItem.id)
-                && Objects.equals(book, cartItem.book)
-                && Objects.equals(quantity, cartItem.quantity);
+        OrderItem orderItem = (OrderItem) o;
+        return quantity == orderItem.quantity
+                && isDeleted == orderItem.isDeleted
+                && Objects.equals(id, orderItem.id)
+                && Objects.equals(book, orderItem.book)
+                && Objects.equals(price, orderItem.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, book, quantity, isDeleted);
+        return Objects.hash(id, book, quantity, price, isDeleted);
     }
 }

@@ -14,7 +14,6 @@ import intro.bookservice.repository.cart.CartItemRepository;
 import intro.bookservice.repository.cart.ShoppingCartRepository;
 import intro.bookservice.service.ShoppingCartService;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -25,8 +24,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final CartItemMapper cartItemMapper;
     private final CartItemRepository cartItemRepository;
     private final ShoppingCartMapper shoppingCartMapper;
-    private final ShoppingCartRepository shoppingCartRepository;
     private final BookRepository bookRepository;
+    private final ShoppingCartRepository shoppingCartRepository;
 
 
     @Override
@@ -59,15 +58,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void deleteCartItem(Long id) {
         cartItemRepository.deleteById(id);
-
     }
 
     private ShoppingCart findShoppingCart(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        Optional<ShoppingCart> shoppingCartById
-                = shoppingCartRepository.findShoppingCartByIdAndCartItems(user.getId());
-        return shoppingCartById.orElseThrow(() ->
-                new NoSuchElementException("Can't find shopping cart for user: "
-                        + user.getEmail()));
+        User user = (User)authentication.getPrincipal();
+         return shoppingCartRepository.findById(user.getId()).orElseThrow(() ->
+                        new NoSuchElementException("Can't find shopping cart for user with email: "
+                                + user.getEmail()));
     }
 }
