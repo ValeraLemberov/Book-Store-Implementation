@@ -1,6 +1,7 @@
 package intro.bookservice.service.impl;
 
-import intro.bookservice.dto.book.BookDto;
+import intro.bookservice.dto.book.BookDtoWithoutCategoryIds;
+import intro.bookservice.dto.book.BookResponseDto;
 import intro.bookservice.dto.book.BookSearchParameters;
 import intro.bookservice.dto.book.CreateBookRequestDto;
 import intro.bookservice.mapper.BookMapper;
@@ -23,12 +24,12 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public BookDto save(CreateBookRequestDto bookDto) {
+    public BookResponseDto save(CreateBookRequestDto bookDto) {
         return bookMapper.toDto(bookRepository.save(bookMapper.toModel(bookDto)));
     }
 
     @Override
-    public List<BookDto> findAll(Pageable pageable) {
+    public List<BookResponseDto> findAll(Pageable pageable) {
         return bookRepository.findAll(pageable)
                 .stream()
                 .map(bookMapper::toDto)
@@ -36,14 +37,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto findById(Long id) {
+    public BookResponseDto findById(Long id) {
         return bookMapper.toDto(bookRepository
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Can't find book by id: " + id)));
     }
 
     @Override
-    public BookDto update(Long id, CreateBookRequestDto bookDto) {
+    public BookResponseDto update(Long id, CreateBookRequestDto bookDto) {
         Book book = bookMapper.toModel(bookDto);
         book.setId(id);
         Book savedBook = bookRepository.save(book);
@@ -56,10 +57,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> search(BookSearchParameters searchParameters) {
+    public List<BookResponseDto> search(BookSearchParameters searchParameters) {
         return bookRepository.findAll(bookSpecificationBuilder.build(searchParameters))
                 .stream()
                 .map(bookMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<BookDtoWithoutCategoryIds> findAllBooksByCategoryId(Long categoryId) {
+        return bookRepository.findAllByCategoryId(categoryId)
+                .stream()
+                .map(bookMapper::toDtoWithoutCategories)
                 .toList();
     }
 }
